@@ -1,0 +1,73 @@
+---
+import { aboutData } from '@/data/about.data';
+import { Image } from 'astro:assets';
+---
+
+<div class="flex flex-col lg:flex-row gap-12 lg:items-start items-center">
+  <!-- Image Section with enhanced styling -->
+  <div class="flex-shrink-0">
+    <div class="relative group">
+      <div class="w-80 h-80 lg:w-96 lg:h-96 rounded-3xl shadow-2xl overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 p-1">
+        <div class="w-full h-full rounded-3xl overflow-hidden">
+          <Image
+            src={aboutData.avatarUrl}
+            alt={aboutData.name}
+            width={450}
+            height={450}
+            class="object-cover object-top w-full h-full transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+      </div>
+      <!-- Decorative elements -->
+      <div class="absolute -top-4 -right-4 w-8 h-8 bg-primary rounded-full opacity-20"></div>
+      <div class="absolute -bottom-4 -left-4 w-6 h-6 bg-secondary rounded-full opacity-30"></div>
+    </div>
+  </div>
+  
+  <!-- Enhanced Card Content Section -->
+  <div class="flex-1 space-y-6">
+    <div class="space-y-3">
+      <h3 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        {aboutData.name}
+      </h3>
+      <p class="text-xl font-semibold text-primary">{aboutData.title}</p>
+      <div class="flex items-center gap-2 text-base-content/70">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+        </svg>
+        <span class="text-sm">{aboutData.address}</span>
+      </div>
+    </div>
+    
+    <div class="prose prose-lg max-w-none">
+      <p class="text-base-content/90 leading-relaxed">{aboutData.summary}</p>
+    </div>
+    
+    <div class="bg-base-200 rounded-2xl p-6">
+      <div class="whitespace-pre-line text-base-content/80 leading-relaxed">
+        {aboutData.bio}
+      </div>
+    </div>
+    
+    <div class="pt-4">
+      <h4 class="text-lg font-semibold mb-4 text-base-content/90">Connect with me</h4>
+      <div class="flex gap-4">
+        {aboutData.social.map((social) => {
+          const IconComponent = social.icon;
+          return (
+            <a
+              href={social.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`btn btn-circle btn-lg transition-all duration-300 hover:scale-110 hover:shadow-lg ${social.style}`}
+              title={social.name}
+              aria-label={`Visit my ${social.name} profile`}
+            >
+              <IconComponent className="w-6 h-6" />
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</div>

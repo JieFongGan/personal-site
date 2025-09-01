@@ -1,0 +1,195 @@
+---
+import ThemeToggle from "@/components/ui/ThemeToggle";
+import Hero from "@/components/Hero.astro";
+import AboutCard from "@/components/AboutCard.astro";
+import Career from "@/components/TimeLine.astro";
+import Footer from "@/components/Footer.astro";
+import "@/pages/global.css";
+---
+
+<html lang="en" data-theme="cupcake">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Personal Site</title>
+	</head>
+	<body>
+		<ThemeToggle client:load />
+
+		<Hero />
+		
+		<!-- About Section -->
+		<section class="py-16 px-4 max-w-7xl mx-auto">
+			<div class="text-center mb-12">
+				<h2 class="text-4xl font-bold mb-4">About Me</h2>
+				<div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+			</div>
+			<AboutCard />
+		</section>
+		
+		<!-- Career Section -->
+		<section class="py-16 px-4">
+			<div class="max-w-7xl mx-auto">
+				<div class="text-center mb-12">
+					<h2 class="text-4xl font-bold mb-4">My Journey</h2>
+					<div class="w-24 h-1 bg-primary mx-auto rounded-full mb-4"></div>
+					<p class="text-lg text-base-content/70 max-w-2xl mx-auto">A timeline of my educational background, internships, and professional experiences</p>
+				</div>
+				<Career />
+			</div>
+		</section>
+		
+		<Footer />
+		
+		<script>
+			// Enhanced cursor interaction with line breaking effect
+			let mouseX = 0;
+			let mouseY = 0;
+			let cursorPresent = false;
+			let connections: any[] = [];
+			let maxConnections = 8;
+			let breakChance = 0.02;
+			
+			// Track mouse movement
+			document.addEventListener('mousemove', (e) => {
+				mouseX = e.clientX;
+				mouseY = e.clientY;
+				cursorPresent = true;
+			});
+			
+			// Hide connection lines when mouse leaves window
+			document.addEventListener('mouseleave', () => {
+				cursorPresent = false;
+				connections = [];
+			});
+			
+			// Show connection lines when mouse enters window
+			document.addEventListener('mouseenter', () => {
+				cursorPresent = true;
+			});
+			
+			// Create dynamic connection lines with breaking effect
+			function createConnectionLines() {
+				const canvas = document.createElement('canvas');
+				canvas.style.position = 'fixed';
+				canvas.style.top = '0';
+				canvas.style.left = '0';
+				canvas.style.width = '100%';
+				canvas.style.height = '100%';
+				canvas.style.pointerEvents = 'none';
+				canvas.style.zIndex = '-1';
+				document.body.appendChild(canvas);
+				
+				const ctx = canvas.getContext('2d');
+				
+				function resizeCanvas() {
+					canvas.width = window.innerWidth;
+					canvas.height = window.innerHeight;
+				}
+				
+				resizeCanvas();
+				window.addEventListener('resize', resizeCanvas);
+				
+				// Generate grid points
+				function getGridPoints() {
+					const points = [];
+					const gridSize = 30;
+					for (let x = 0; x < canvas.width; x += gridSize) {
+						for (let y = 0; y < canvas.height; y += gridSize) {
+							points.push({ x, y });
+						}
+					}
+					return points;
+				}
+				
+				// Draw connection lines with breaking effect
+				function drawConnections() {
+					if (!ctx) return;
+
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					
+					if (cursorPresent) {
+						const gridPoints = getGridPoints();
+						const connectionRadius = 120;
+						
+						// Find nearby points and manage connections
+						const nearbyPoints = gridPoints.filter(point => {
+							const distance = Math.sqrt((point.x - mouseX) ** 2 + (point.y - mouseY) ** 2);
+							return distance < connectionRadius;
+						}).sort((a, b) => {
+							const distA = Math.sqrt((a.x - mouseX) ** 2 + (a.y - mouseY) ** 2);
+							const distB = Math.sqrt((b.x - mouseX) ** 2 + (b.y - mouseY) ** 2);
+							return distA - distB;
+						});
+						
+						// Randomly break existing connections
+						connections = connections.filter(conn => {
+							if (Math.random() < breakChance) {
+								return false; // Break this connection
+							}
+							// Check if point is still nearby
+							const distance = Math.sqrt((conn.x - mouseX) ** 2 + (conn.y - mouseY) ** 2);
+							return distance < connectionRadius;
+						});
+						
+						// Add new connections up to maximum
+						for (const point of nearbyPoints) {
+							if (connections.length >= maxConnections) break;
+							
+							const exists = connections.some(conn => conn.x === point.x && conn.y === point.y);
+							if (!exists && Math.random() < 0.3) { // 30% chance to connect
+								connections.push({
+									x: point.x,
+									y: point.y,
+									opacity: 0,
+									growing: true
+								});
+							}
+						}
+						
+						// Draw and animate connections
+						connections.forEach(conn => {
+							const distance = Math.sqrt((conn.x - mouseX) ** 2 + (conn.y - mouseY) ** 2);
+							const maxOpacity = 1 - (distance / connectionRadius);
+							
+							// Animate opacity
+							if (conn.growing) {
+								conn.opacity += 0.05;
+								if (conn.opacity >= maxOpacity) {
+									conn.opacity = maxOpacity;
+									conn.growing = false;
+								}
+							}
+							
+							// Get theme primary color
+							const primaryColor = 'black';
+							const [h, s, l] = primaryColor.split(' ');
+							
+							ctx.strokeStyle = `hsla(${h}, ${s}, ${l}, ${conn.opacity * 0.8})`;
+							ctx.lineWidth = 1.5;
+							ctx.beginPath();
+							ctx.moveTo(mouseX, mouseY);
+							ctx.lineTo(conn.x, conn.y);
+							ctx.stroke();
+							
+							// Draw small dot at connection point
+							ctx.fillStyle = `hsla(${h}, ${s}, ${l}, ${conn.opacity})`;
+							ctx.beginPath();
+							ctx.arc(conn.x, conn.y, 2, 0, Math.PI * 2);
+							ctx.fill();
+						});
+					}
+					
+					requestAnimationFrame(drawConnections);
+				}
+				
+				drawConnections();
+			}
+			
+			// Initialize connection lines
+			createConnectionLines();
+		</script>
+	</body>
+</html>
