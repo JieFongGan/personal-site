@@ -1,43 +1,84 @@
-# Astro Starter Kit: Minimal
+# Personal Portfolio Site
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A modern portfolio website built with Astro, React, Tailwind CSS, and DaisyUI.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## ✨ Features
+
+- **Responsive Design**: Mobile-first approach with modern UI components
+- **Dark/Light Theme**: Toggle between themes with DaisyUI
+- **Interactive Elements**: Smooth animations and cursor effects
+- **Professional Timeline**: Educational background and career progression
+- **Social Integration**: Links to LinkedIn, GitHub, Instagram, and email
+- **Modern Tech Stack**: Built with cutting-edge web technologies
 
 ## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
 
 ```text
 /
 ├── public/
+│   ├── Flag_of_Malaysia.webp
+│   ├── daisyui-logo.webp
+│   ├── favicon.svg
+│   └── jf-formal.webp
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── components/
+│   │   ├── AboutCard.astro
+│   │   ├── Footer.astro
+│   │   ├── Hero.astro
+│   │   ├── TimeLine.astro
+│   │   └── ui/
+│   ├── data/
+│   │   ├── about.data.ts
+│   │   └── career.data.ts
+│   ├── pages/
+│   │   ├── global.css
+│   │   └── index.astro
+│   └── types/
+│       ├── about.types.ts
+│       └── career.types.ts
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🛠️ Tech Stack
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
+- **Framework**: [Astro](https://astro.build/) - Static site generator
+- **UI Library**: [React](https://react.dev/) - Component library
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- **Components**: [DaisyUI](https://daisyui.com/) - Tailwind CSS component library
+- **Icons**: [React Icons](https://react-icons.github.io/react-icons/) - Popular icon library
+- **Language**: [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
 
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| Command           | Action                                           |
+| :---------------- | :----------------------------------------------- |
+| `npm install`     | Installs dependencies                            |
+| `npm run dev`     | Starts local dev server at `localhost:4321`     |
+| `npm run build`   | Build your production site to `./dist/`         |
+| `npm run preview` | Preview your build locally, before deploying    |
+| `npm run astro`   | Run CLI commands like `astro add`, `astro check`|
 
-## 👀 Want to learn more?
+## 🚀 Getting Started
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start the development server: `npm run dev`
+4. Open [http://localhost:4321](http://localhost:4321) in your browser
+
+## 📦 Build
+
+To build the project for production:
+
+```bash
+npm run build
+```
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
