@@ -3,91 +3,60 @@ import { aboutData } from "@/data/about.data";
 import { LuMapPin } from "react-icons/lu";
 import { Image } from "astro:assets";
 
-// Multilingual greetings based on time of day
-function getMultilingualGreetings() {
-    const hour = new Date().getHours();
-    let timeOfDay: "morning" | "afternoon" | "evening" | "night";
-
-    if (hour >= 6 && hour < 12) timeOfDay = "morning";
-    else if (hour >= 12 && hour < 17) timeOfDay = "afternoon";
-    else if (hour >= 17 && hour < 22) timeOfDay = "evening";
-    else timeOfDay = "night";
-
-    const greetings = {
-        morning: {
-            en: "Good morning",
-            zh: "早上好",
-            ms: "Selamat pagi",
-            ja: "おはようございます",
-            ko: "좋은 아침이에요",
-            fr: "Bonjour",
-            es: "Buenos días",
-            de: "Guten Morgen",
-            it: "Buongiorno",
-            pt: "Bom dia",
-            ru: "Доброе утро",
-            ar: "صباح الخير",
-            hi: "सुप्रभात",
-            th: "สวัสดีตอนเช้า",
-            vi: "Chào buổi sáng",
-        },
-        afternoon: {
-            en: "Good afternoon",
-            zh: "下午好",
-            ms: "Selamat tengah hari",
-            ja: "こんにちは",
-            ko: "좋은 오후예요",
-            fr: "Bon après-midi",
-            es: "Buenas tardes",
-            de: "Guten Tag",
-            it: "Buon pomeriggio",
-            pt: "Boa tarde",
-            ru: "Добрый день",
-            ar: "مساء الخير",
-            hi: "नमस्कार",
-            th: "สวัสดีตอนบ่าย",
-            vi: "Chào buổi chiều",
-        },
-        evening: {
-            en: "Good evening",
-            zh: "晚上好",
-            ms: "Selamat petang",
-            ja: "こんばんは",
-            ko: "좋은 저녁이에요",
-            fr: "Bonsoir",
-            es: "Buenas tardes",
-            de: "Guten Abend",
-            it: "Buonasera",
-            pt: "Boa noite",
-            ru: "Добрый вечер",
-            ar: "مساء الخير",
-            hi: "शुभ संध्या",
-            th: "สวัสดีตอนเย็น",
-            vi: "Chào buổi tối",
-        },
-        night: {
-            en: "Good night",
-            zh: "晚安",
-            ms: "Selamat malam",
-            ja: "おやすみなさい",
-            ko: "안녕히 주무세요",
-            fr: "Bonne nuit",
-            es: "Buenas noches",
-            de: "Gute Nacht",
-            it: "Buonanotte",
-            pt: "Boa noite",
-            ru: "Спокойной ночи",
-            ar: "تصبح على خير",
-            hi: "शुभ रात्रि",
-            th: "ราตรีสวัสดิ์",
-            vi: "Chúc ngủ ngon",
-        },
-    };
-
-    return Object.values(greetings[timeOfDay]);
-}
-
-const greetings = getMultilingualGreetings();
+// All multilingual greetings - time detection will happen on client side
+const allGreetings = {
+    morning: {
+        en: "Good morning",
+        zh: "早上好",
+        ms: "Selamat pagi",
+        ja: "おはようございます",
+        ko: "좋은 아침이에요",
+        fr: "Bonjour",
+        es: "Buenos días",
+        de: "Guten Morgen",
+        it: "Buongiorno",
+        pt: "Bom dia",
+        ru: "Доброе утро",
+        ar: "صباح الخير",
+        hi: "सुप्रभात",
+        th: "สวัสดีตอนเช้า",
+        vi: "Chào buổi sáng",
+    },
+    afternoon: {
+        en: "Good afternoon",
+        zh: "下午好",
+        ms: "Selamat petang",
+        ja: "こんにちは",
+        ko: "좋은 오후예요",
+        fr: "Bon après-midi",
+        es: "Buenas tardes",
+        de: "Guten Tag",
+        it: "Buon pomeriggio",
+        pt: "Boa tarde",
+        ru: "Добрый день",
+        ar: "مساء الخير",
+        hi: "नमस्कार",
+        th: "สวัสดีตอนบ่าย",
+        vi: "Chào buổi chiều",
+    },
+    night: {
+        en: "Good evening",
+        zh: "晚上好",
+        ms: "Selamat malam",
+        ja: "こんばんは",
+        ko: "좋은 저녁이에요",
+        fr: "Bonsoir",
+        es: "Buenas noches",
+        de: "Guten Abend",
+        it: "Buonasera",
+        pt: "Boa noite",
+        ru: "Добрый вечер",
+        ar: "مساء الخير",
+        hi: "शुभ संध्या",
+        th: "สวัสดีตอนเย็น",
+        vi: "Chào buổi tối",
+    },
+};
 ---
 
 <div class="hero min-h-screen relative">
@@ -142,10 +111,19 @@ const greetings = getMultilingualGreetings();
     }
 </style>
 
-<script define:vars={{ greetings }}>
+<script define:vars={{ allGreetings }}>
     document.addEventListener("DOMContentLoaded", function () {
         const greetingElement = document.getElementById("greeting-text");
-        const greetingTexts = greetings;
+        
+        // Determine time of day based on visitor's local time
+        const hour = new Date().getHours();
+        let timeOfDay;
+        
+        if (hour >= 6 && hour < 12) timeOfDay = "morning";
+        else if (hour >= 12 && hour < 17) timeOfDay = "afternoon";
+        else timeOfDay = "night";
+        
+        const greetingTexts = Object.values(allGreetings[timeOfDay]);
         let currentGreetingIndex = 0;
         let currentCharIndex = 0;
         let isDeleting = false;
