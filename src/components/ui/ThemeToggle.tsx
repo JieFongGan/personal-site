@@ -3,67 +3,78 @@
 import { useEffect, useState } from "react";
 import { LuSun, LuMoon } from "react-icons/lu";
 
+// Global theme constants
+const LIGHT_THEME = "corporate";
+const DARK_THEME = "dracula";
+const THEME_KEY = "theme";
+
+type ThemeType = typeof LIGHT_THEME | typeof DARK_THEME;
+
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"cupcake" | "business">("cupcake");
+  const [theme, setTheme] = useState<ThemeType>(LIGHT_THEME);
+
+  // Apply theme to <html> attribute
+  const applyTheme = (t: ThemeType) => {
+    document.documentElement.setAttribute("data-theme", t);
+  };
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "cupcake" | "business" | null;
+    const savedTheme = localStorage.getItem(THEME_KEY) as ThemeType | null;
 
     if (savedTheme) {
-      // If user manually set theme, use it
       setTheme(savedTheme);
-      document.documentElement.setAttribute("data-theme", savedTheme);
+      applyTheme(savedTheme);
     } else {
-      // No saved theme → check system preference
+      // Check system preference
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme = prefersDark ? DARK_THEME : LIGHT_THEME;
 
-      if (prefersDark) {
-        setTheme("business");
-        document.documentElement.setAttribute("data-theme", "business");
-      } else {
-        // Fallback to time-based theme
-        const hour = new Date().getHours();
-        const timeBasedTheme = hour >= 18 || hour < 6 ? "business" : "cupcake";
-        setTheme(timeBasedTheme);
-        document.documentElement.setAttribute("data-theme", timeBasedTheme);
-      }
+      setTheme(initialTheme);
+      applyTheme(initialTheme);
     }
 
-    // Listen for system theme changes
+    // Watch for system theme changes
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        const newTheme = e.matches ? "business" : "cupcake";
+      if (!localStorage.getItem(THEME_KEY)) {
+        const newTheme = e.matches ? DARK_THEME : LIGHT_THEME;
         setTheme(newTheme);
-        document.documentElement.setAttribute("data-theme", newTheme);
+        applyTheme(newTheme);
       }
     };
 
     mediaQuery.addEventListener("change", handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleChange);
-    };
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
+  // Update <html> when user toggles
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    applyTheme(theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    const newTheme = theme === "cupcake" ? "business" : "cupcake";
+    const newTheme = theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
     setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
+    localStorage.setItem(THEME_KEY, newTheme);
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 glass rounded-full">
-      <button onClick={toggleTheme} className="btn btn-circle btn-ghost">
-        {theme === "cupcake" ? (
-          <LuSun className="w-6 h-6" />
-        ) : (
-          <LuMoon className="w-6 h-6" />
-        )}
+    <div className="fixed top-4 right-4 z-50">
+      <button
+        onClick={toggleTheme}
+        className="btn btn-circle bg-base-200 hover:bg-base-300 border border-base-content/20 shadow transition-transform duration-500 hover:scale-110"
+      >
+        <div
+          className={`transition-all duration-500 transform ${
+            theme === LIGHT_THEME ? "rotate-0 scale-100" : "rotate-180 scale-110"
+          }`}
+        >
+          {theme === LIGHT_THEME ? (
+            <LuSun className="w-6 h-6 text-amber-400" />
+          ) : (
+            <LuMoon className="w-6 h-6 text-blue-400" />
+          )}
+        </div>
       </button>
     </div>
   );

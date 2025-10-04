@@ -147,7 +147,7 @@ export const careerData: CareerType[] = [
             {
                 name: "Next.js",
                 icon: SiNextdotjs,
-                style: "",
+                style: "text-black-500",
             },
             {
                 name: "PostgreSQL",

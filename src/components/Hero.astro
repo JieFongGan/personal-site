@@ -1,6 +1,5 @@
 ---
 import { aboutData } from "@/data/about.data";
-import { LuMapPin } from "react-icons/lu";
 import { Image } from "astro:assets";
 
 // All multilingual greetings - time detection will happen on client side
@@ -60,29 +59,35 @@ const allGreetings = {
 ---
 
 <div class="hero min-h-screen relative">
-    <div class="hero-content text-base-content text-center relative z-10">
-        <div class="max-w-4xl">
-            <h1 class="mb-6 text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
-                <span id="greeting-text"></span><br/>
-                I'm <span class="whitespace-nowrap">{aboutData.name}</span>
-            </h1>
-            <p class="mb-6 text-lg md:text-xl lg:text-2xl xl:text-3xl">
-                Currently a {aboutData.title}
-            </p>
-            <p class="mb-6 text-base md:text-lg lg:text-xl opacity-90 flex items-center justify-center gap-2">
-                <LuMapPin className="w-5 h-5" />
-                <Image 
-                    src="/Flag_of_Malaysia.webp"
-                    alt="Malaysia Flag" 
-                    width={24} 
-                    height={16} 
-                    class="inline-block"
-                    loading="eager"
-                />
-                {aboutData.address}
-            </p>
-        </div>
+  <div class="hero-content text-base-content text-center relative z-10">
+    <div class="max-w-4xl">
+      <h1 class="mb-6 text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
+        <span id="greeting-text"></span><br />
+        I'm 
+        <span
+          class="whitespace-nowrap bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block leading-tight pb-1"
+        >
+          {aboutData.name}
+        </span>
+      </h1>
+
+      <p class="mb-6 text-lg md:text-xl lg:text-2xl xl:text-3xl">
+        Currently a {aboutData.title}
+      </p>
+
+      <p class="mb-6 text-base md:text-lg lg:text-xl opacity-90 flex items-center justify-center gap-2">
+        <Image
+          src="/Flag_of_Malaysia.webp"
+          alt="Malaysia Flag"
+          width={24}
+          height={16}
+          class="inline-block"
+          loading="eager"
+        />
+        {aboutData.address}
+      </p>
     </div>
+  </div>
 </div>
 
 <style>
@@ -120,7 +125,7 @@ const allGreetings = {
         let timeOfDay;
         
         if (hour >= 6 && hour < 12) timeOfDay = "morning";
-        else if (hour >= 12 && hour < 17) timeOfDay = "afternoon";
+        else if (hour >= 12 && hour < 18) timeOfDay = "afternoon";
         else timeOfDay = "night";
         
         const greetingTexts = Object.values(allGreetings[timeOfDay]);

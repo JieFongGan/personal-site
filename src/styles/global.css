@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth animated gradient background */
+body {
+  background: hsl(var(--b1));
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Add a global transition for theme changes */
+*,
+*::before,
+*::after {
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Consistent badge styling across themes */
+.badge {
+  border-radius: 1rem !important;
+}
+
+/* Optional: If you want perfectly circular badges for specific cases */
+.badge-circle {
+  border-radius: 9999px !important;
+}
+
+/* Consistent card styling across themes */
+.card {
+  border-radius: 1rem !important;
+}
+
+/* Consistent button styling across themes */
+.btn {
+  border-radius: 0.5rem !important;
+}
+
+.btn-circle {
+  border-radius: 9999px !important;
+}

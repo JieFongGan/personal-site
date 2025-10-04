@@ -33,7 +33,6 @@ export const aboutData: AboutType = {
         }
     ],
     summary: "Coding, gaming, and trying to be better",
-    bio: `I'm from Johor, born and raised. Graduated from Tunku Abdul Rahman University of Technology and currently learning full-stack development - still figuring things out, but enjoying the process.
-    \nMost of my free time goes into gaming (The Witcher 3 and Kingdom Come: Deliverance 2 are some of the best games I've ever played) or listening to music. Lately, I've had The Weeknd on repeat. I also enjoy exploring new things, watching shows, and keeping up with motorsport like Formula 1.
-    `
+    bio: `I was born and raised in Johor and graduated from Tunku Abdul Rahman University of Technology. I'm currently diving into full-stack development — still figuring things out, but enjoying every step of the journey and learning something new each day.
+    \nOutside of coding, I like spending my time gaming, listening to music, exploring new ideas, watching shows, and keeping up with Formula 1. I enjoy discovering how things work, whether it's in tech, design, or everyday life, and I'm always looking for ways to grow and challenge myself.`
 }
