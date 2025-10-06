@@ -5,7 +5,7 @@ import { LuSun, LuMoon } from "react-icons/lu";
 
 // Global theme constants
 const LIGHT_THEME = "corporate";
-const DARK_THEME = "dracula";
+const DARK_THEME = "business";
 const THEME_KEY = "theme";
 
 type ThemeType = typeof LIGHT_THEME | typeof DARK_THEME;
