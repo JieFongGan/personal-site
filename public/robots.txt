@@ -1,0 +1,6 @@
+# Allow all search engines - recommended for a public portfolio
+User-agent: *
+Disallow:
+
+# Optional: point crawlers to your sitemap
+Sitemap: https://ganjiefong.pages.dev/sitemap.xml
