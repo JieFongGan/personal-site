@@ -125,14 +125,14 @@ export const careerData: CareerType[] = [
     },
     {
         category: "job",
-        title: "Full Stack Developer",
+        title: "Full-Stack Web Developer",
         organization: "Morning Geek",
         startDate: new Date(2024, 9),
         endDate: new Date(),
         isCurrent: true,
-        description: `**Current Position - Full Stack Developer** - Leading full-stack development projects using modern technologies. 
-        Responsible for both frontend and backend development, system architecture, and technical decision-making. 
-        Working with cutting-edge frameworks and tools to build scalable web applications.`,
+        description: `Responsible for end-to-end development across both frontend and backend systems, 
+        including system architecture design and technical decision-making, while leveraging modern frameworks and tools 
+        to build scalable and efficient web applications.`,
         learnedSkills: [
             {
                 name: "React",

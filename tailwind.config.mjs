@@ -6,8 +6,7 @@ export default {
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ["corporate", "business"],
-    darkTheme: "business",
+    themes: "all",
     base: true,
     styled: true,
     utils: true,

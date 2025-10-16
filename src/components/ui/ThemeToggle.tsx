@@ -1,81 +1,117 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { LuSun, LuMoon } from "react-icons/lu";
+import { useEffect, useState, useCallback } from "react";
+import { LuSun, LuMoon, LuChevronDown } from "react-icons/lu";
 
-// Global theme constants
-const LIGHT_THEME = "corporate";
-const DARK_THEME = "business";
 const THEME_KEY = "theme";
+const LIGHT_DEFAULT = "light";
+const DARK_DEFAULT = "dark";
 
-type ThemeType = typeof LIGHT_THEME | typeof DARK_THEME;
+const THEMES = {
+  light: ["light", "corporate", "cupcake", "retro", "lemonade", "autumn", "cyberpunk"],
+  dark: ["dark", "business", "dracula", "luxury", "halloween", "forest", "synthwave"],
+};
+
+const ALL_DARK_THEMES = THEMES.dark;
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeType>(LIGHT_THEME);
+  const [theme, setTheme] = useState<string>(LIGHT_DEFAULT);
 
-  // Apply theme to <html> attribute
-  const applyTheme = (t: ThemeType) => {
+  const applyTheme = useCallback((t: string) => {
     document.documentElement.setAttribute("data-theme", t);
-  };
+  }, []);
 
+  const getSystemTheme = useCallback(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return prefersDark ? DARK_DEFAULT : LIGHT_DEFAULT;
+  }, []);
+
+  const handleThemeChange = useCallback((newTheme: string) => {
+    setTheme(newTheme);
+    sessionStorage.setItem(THEME_KEY, newTheme);
+    (document.activeElement as HTMLElement)?.blur();
+  }, []);
+
+  // Initialize theme
   useEffect(() => {
-    const savedTheme = localStorage.getItem(THEME_KEY) as ThemeType | null;
+    const saved = sessionStorage.getItem(THEME_KEY);
+    const initial = saved || getSystemTheme();
+    setTheme(initial);
+    applyTheme(initial);
+  }, [applyTheme, getSystemTheme]);
 
-    if (savedTheme) {
-      setTheme(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initialTheme = prefersDark ? DARK_THEME : LIGHT_THEME;
-
-      setTheme(initialTheme);
-      applyTheme(initialTheme);
-    }
-
-    // Watch for system theme changes
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem(THEME_KEY)) {
-        const newTheme = e.matches ? DARK_THEME : LIGHT_THEME;
-        setTheme(newTheme);
-        applyTheme(newTheme);
+  // Listen to system theme changes
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    
+    const handler = (e: MediaQueryListEvent) => {
+      if (!sessionStorage.getItem(THEME_KEY)) {
+        const sysTheme = e.matches ? DARK_DEFAULT : LIGHT_DEFAULT;
+        setTheme(sysTheme);
+        applyTheme(sysTheme);
       }
     };
 
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [applyTheme]);
 
-  // Update <html> when user toggles
+  // Apply theme when it changes
   useEffect(() => {
     applyTheme(theme);
-  }, [theme]);
+  }, [theme, applyTheme]);
 
-  const toggleTheme = () => {
-    const newTheme = theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
-    setTheme(newTheme);
-    localStorage.setItem(THEME_KEY, newTheme);
-  };
+  const isDark = ALL_DARK_THEMES.includes(theme);
 
   return (
     <div className="fixed top-4 right-4 z-50">
-      <button
-        onClick={toggleTheme}
-        className="btn btn-circle bg-base-200 hover:bg-base-300 border border-base-content/20 shadow transition-transform duration-500 hover:scale-110"
-      >
+      <div className="dropdown dropdown-end">
         <div
-          className={`transition-all duration-500 transform ${
-            theme === LIGHT_THEME ? "rotate-0 scale-100" : "rotate-180 scale-110"
-          }`}
+          tabIndex={0}
+          role="button"
+          className="btn btn-sm sm:btn-md btn-glass border border-base-content/10 gap-2 normal-case shadow-md hover:shadow-lg transition-all"
+          aria-label="Select theme"
         >
-          {theme === LIGHT_THEME ? (
-            <LuSun className="w-6 h-6 text-amber-400" />
-          ) : (
-            <LuMoon className="w-6 h-6 text-blue-400" />
-          )}
+          <div
+            className={`transition-transform duration-500 ${
+              isDark ? "rotate-180" : "rotate-0"
+            }`}
+          >
+            {isDark ? (
+              <LuMoon className="w-5 h-5 text-blue-400" />
+            ) : (
+              <LuSun className="w-5 h-5 text-amber-400" />
+            )}
+          </div>
+          <span className="hidden sm:inline font-medium capitalize">{theme}</span>
+          <LuChevronDown className="w-4 h-4 opacity-70 hidden sm:block" />
         </div>
-      </button>
+
+        <ul
+          tabIndex={0}
+          className="dropdown-content menu p-2 mt-2 shadow-xl bg-base-200/90 backdrop-blur-md rounded-box w-48 sm:w-56 border border-base-content/10 max-h-80 overflow-y-auto"
+        >
+          {Object.entries(THEMES).map(([category, themeList]) => (
+            <li key={category}>
+              <div className="menu-title">
+                <span className="text-xs opacity-60 capitalize">{category} Themes</span>
+              </div>
+              <ul>
+                {themeList.map((t) => (
+                  <li key={t}>
+                    <button
+                      onClick={() => handleThemeChange(t)}
+                      className={`capitalize ${theme === t ? "active font-semibold" : ""}`}
+                    >
+                      {t}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
