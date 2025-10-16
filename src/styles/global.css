@@ -19,27 +19,3 @@ body {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
 }
-
-/* Consistent badge styling across themes */
-.badge {
-  border-radius: 1rem !important;
-}
-
-/* Optional: If you want perfectly circular badges for specific cases */
-.badge-circle {
-  border-radius: 9999px !important;
-}
-
-/* Consistent card styling across themes */
-.card {
-  border-radius: 1rem !important;
-}
-
-/* Consistent button styling across themes */
-.btn {
-  border-radius: 0.5rem !important;
-}
-
-.btn-circle {
-  border-radius: 9999px !important;
-}

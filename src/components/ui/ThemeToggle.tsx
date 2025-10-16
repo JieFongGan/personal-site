@@ -8,14 +8,15 @@ const LIGHT_DEFAULT = "light";
 const DARK_DEFAULT = "dark";
 
 const THEMES = {
-  light: ["light", "corporate", "cupcake", "retro", "lemonade", "autumn", "cyberpunk"],
-  dark: ["dark", "business", "dracula", "luxury", "halloween", "forest", "synthwave"],
+  Light: ["light", "corporate", "cupcake", "retro", "lemonade", "autumn", "valentine"],
+  Dark: ["dark", "business", "dracula", "luxury", "halloween", "forest", "synthwave"],
 };
 
-const ALL_DARK_THEMES = THEMES.dark;
+const ALL_DARK_THEMES = THEMES.Dark;
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState<string>(LIGHT_DEFAULT);
+  const [open, setOpen] = useState(false);
 
   const applyTheme = useCallback((t: string) => {
     document.documentElement.setAttribute("data-theme", t);
@@ -29,7 +30,6 @@ export default function ThemeToggle() {
   const handleThemeChange = useCallback((newTheme: string) => {
     setTheme(newTheme);
     sessionStorage.setItem(THEME_KEY, newTheme);
-    (document.activeElement as HTMLElement)?.blur();
   }, []);
 
   // Initialize theme
@@ -43,7 +43,6 @@ export default function ThemeToggle() {
   // Listen to system theme changes
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    
     const handler = (e: MediaQueryListEvent) => {
       if (!sessionStorage.getItem(THEME_KEY)) {
         const sysTheme = e.matches ? DARK_DEFAULT : LIGHT_DEFAULT;
@@ -51,7 +50,6 @@ export default function ThemeToggle() {
         applyTheme(sysTheme);
       }
     };
-
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, [applyTheme]);
@@ -61,16 +59,26 @@ export default function ThemeToggle() {
     applyTheme(theme);
   }, [theme, applyTheme]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest(".theme-dropdown")) {
+        setOpen(false);
+      }
+    };
+    if (open) document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
   const isDark = ALL_DARK_THEMES.includes(theme);
 
   return (
-    <div className="fixed top-4 right-4 z-50">
-      <div className="dropdown dropdown-end">
-        <div
-          tabIndex={0}
-          role="button"
-          className="btn btn-sm sm:btn-md btn-glass border border-base-content/10 gap-2 normal-case shadow-md hover:shadow-lg transition-all"
-          aria-label="Select theme"
+    <div className="fixed top-3 sm:top-4 right-3 sm:right-4 z-[60] theme-dropdown">
+      <div className="dropdown dropdown-bottom dropdown-end">
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          className="btn btn-glass border border-base-content/10 gap-2 normal-case shadow-md hover:shadow-lg transition-all"
         >
           <div
             className={`transition-transform duration-500 ${
@@ -84,33 +92,42 @@ export default function ThemeToggle() {
             )}
           </div>
           <span className="hidden sm:inline font-medium capitalize">{theme}</span>
-          <LuChevronDown className="w-4 h-4 opacity-70 hidden sm:block" />
-        </div>
+          <LuChevronDown
+            className={`w-4 h-4 opacity-70 hidden sm:block transition-transform ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        </button>
 
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu p-2 mt-2 shadow-xl bg-base-200/90 backdrop-blur-md rounded-box w-48 sm:w-56 border border-base-content/10 max-h-80 overflow-y-auto"
-        >
-          {Object.entries(THEMES).map(([category, themeList]) => (
-            <li key={category}>
-              <div className="menu-title">
-                <span className="text-xs opacity-60 capitalize">{category} Themes</span>
-              </div>
-              <ul>
-                {themeList.map((t) => (
-                  <li key={t}>
-                    <button
-                      onClick={() => handleThemeChange(t)}
-                      className={`capitalize ${theme === t ? "active font-semibold" : ""}`}
-                    >
-                      {t}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+        {open && (
+          <ul
+            className="dropdown-content menu xl:menu-horizontal bg-base-200/90 p-2 mt-2 z-1 lg:min-w-max shadow-xl backdrop-blur-md"
+          >
+            {Object.entries(THEMES).map(([category, themeList]) => (
+              <li key={category}>
+                <h2 className="menu-title">{category} Themes</h2>
+                <ul>
+                  {themeList.map((t) => (
+                    <li key={t}>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleThemeChange(t);
+                        }}
+                        className={`capitalize w-full text-left ${
+                          theme === t ? "active font-semibold" : ""
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ export const aboutData: AboutType = {
             link: "mailto:jiefonggan@outlook.com"
         }
     ],
-    summary: "Coding, gaming, and trying to be better",
-    bio: `I was born and raised in Johor and graduated from Tunku Abdul Rahman University of Technology. I'm currently diving into full-stack development - still figuring things out, but enjoying every step of the journey and learning something new each day.
+    summary: "Code. Create. Deploy. Repeat.",
+    bio: `I was born and raised in Johor and graduated from Tunku Abdul Rahman University of Technology. I'm currently diving into full-stack web development - still figuring things out, but enjoying every step of the journey and learning something new each day.
     \nOutside of coding, I like spending my time gaming, listening to music, exploring new ideas, watching shows, and keeping up with Formula 1. I enjoy discovering how things work, whether it's in tech, design, or everyday life, and I'm always looking for ways to grow and challenge myself.`
 }
