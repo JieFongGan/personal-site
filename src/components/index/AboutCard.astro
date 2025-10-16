@@ -1,0 +1,118 @@
+---
+import { aboutData } from "@/data/about.data";
+import { Image } from "astro:assets";
+---
+
+<section
+  class="flex flex-col lg:flex-row items-center lg:items-start gap-10 lg:gap-16"
+>
+  <!-- Profile Image -->
+  <div
+    class="relative group w-3/4 sm:w-2/3 md:w-1/2 lg:w-[24rem] xl:w-[26rem] max-w-xs sm:max-w-sm lg:max-w-none"
+  >
+    <div
+      class="relative rounded-[2rem] overflow-hidden shadow-xl transition-transform duration-500 group-hover:scale-[1.03]"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-tr from-primary/30 via-secondary/20 to-accent/20 blur-3xl opacity-40 animate-pulse"
+      >
+      </div>
+      <div
+        class="relative aspect-square rounded-[2rem] overflow-hidden bg-base-200/40 backdrop-blur-sm ring-1 ring-base-content/10"
+      >
+        <Image
+          src={aboutData.avatarUrl}
+          alt={aboutData.name}
+          width={450}
+          height={450}
+          class="object-cover object-top w-full h-full transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+    </div>
+
+    <!-- Animated conic glow ring -->
+    <div
+      class="absolute -inset-[3px] rounded-[2.1rem] opacity-0 group-hover:opacity-100 transition-all duration-700 blur-md bg-[conic-gradient(var(--p)_0deg,var(--s)_90deg,var(--a)_180deg,var(--p)_360deg)] animate-spin-slow"
+    >
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 w-full text-center lg:text-left space-y-6">
+    <header class="space-y-2">
+      <h2
+        class="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent inline-block pb-2"
+      >
+        {aboutData.name}
+      </h2>
+      <p class="text-base sm:text-lg font-semibold text-primary">
+        {aboutData.title}
+      </p>
+
+      <div
+        class="flex items-center justify-center lg:justify-start gap-2 text-sm text-base-content/70"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fill-rule="evenodd"
+            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+            clip-rule="evenodd"></path>
+        </svg>
+        <span class="truncate max-w-[80%]">{aboutData.address}</span>
+      </div>
+    </header>
+
+    <article class="max-w-prose mx-auto lg:mx-0 text-base-content/80">
+      <p class="leading-relaxed">{aboutData.summary}</p>
+    </article>
+
+    <div
+      class="bg-base-200/60 backdrop-blur-sm rounded-2xl p-5 sm:p-6 shadow-inner border border-base-300/50"
+    >
+      <p class="whitespace-pre-line text-base-content/80 leading-relaxed">
+        {aboutData.bio}
+      </p>
+    </div>
+
+    <footer class="pt-2">
+      <h4 class="text-lg font-semibold mb-3 sm:mb-4 text-base-content/90">
+        Connect with me
+      </h4>
+      <div
+        class="flex flex-wrap justify-center lg:justify-start gap-3 sm:gap-4"
+      >
+        {
+          aboutData.social.map((social) => {
+            const IconComponent = social.icon;
+            return (
+              <a
+                href={social.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class={`btn btn-circle btn-md sm:btn-lg border-0 transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_25px_var(--p)] ${social.style}`}
+                title={social.name}
+                aria-label={`Visit my ${social.name} profile`}
+              >
+                <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
+              </a>
+            );
+          })
+        }
+      </div>
+    </footer>
+  </div>
+</section>
+
+<style>
+  @keyframes spin-slow {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
+  }
+</style>

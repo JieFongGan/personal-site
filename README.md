@@ -11,36 +11,6 @@ A modern portfolio website built with Astro, React, Tailwind CSS, and DaisyUI.
 - **Social Integration**: Links to LinkedIn, GitHub, Instagram, and email
 - **Modern Tech Stack**: Built with cutting-edge web technologies
 
-## 🚀 Project Structure
-
-```text
-/
-├── public/
-│   ├── Flag_of_Malaysia.webp
-│   ├── daisyui-logo.webp
-│   ├── favicon.svg
-│   └── jf-formal.webp
-├── src/
-│   ├── components/
-│   │   ├── AboutCard.astro
-│   │   ├── Footer.astro
-│   │   ├── Hero.astro
-│   │   ├── TimeLine.astro
-│   │   └── ui/
-│   ├── data/
-│   │   ├── about.data.ts
-│   │   └── career.data.ts
-│   ├── pages/
-│   │   ├── global.css
-│   │   └── index.astro
-│   └── types/
-│       ├── about.types.ts
-│       └── career.types.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
-
 ## 🛠️ Tech Stack
 
 - **Framework**: [Astro](https://astro.build/) - Static site generator

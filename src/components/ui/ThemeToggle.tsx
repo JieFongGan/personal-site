@@ -1,81 +1,134 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { LuSun, LuMoon } from "react-icons/lu";
+import { useEffect, useState, useCallback } from "react";
+import { LuSun, LuMoon, LuChevronDown } from "react-icons/lu";
 
-// Global theme constants
-const LIGHT_THEME = "corporate";
-const DARK_THEME = "business";
 const THEME_KEY = "theme";
+const LIGHT_DEFAULT = "light";
+const DARK_DEFAULT = "dark";
 
-type ThemeType = typeof LIGHT_THEME | typeof DARK_THEME;
+const THEMES = {
+  Light: ["light", "corporate", "cupcake", "retro", "lemonade", "autumn", "valentine"],
+  Dark: ["dark", "business", "dracula", "luxury", "halloween", "forest", "synthwave"],
+};
+
+const ALL_DARK_THEMES = THEMES.Dark;
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<ThemeType>(LIGHT_THEME);
+  const [theme, setTheme] = useState<string>(LIGHT_DEFAULT);
+  const [open, setOpen] = useState(false);
 
-  // Apply theme to <html> attribute
-  const applyTheme = (t: ThemeType) => {
+  const applyTheme = useCallback((t: string) => {
     document.documentElement.setAttribute("data-theme", t);
-  };
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem(THEME_KEY) as ThemeType | null;
-
-    if (savedTheme) {
-      setTheme(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initialTheme = prefersDark ? DARK_THEME : LIGHT_THEME;
-
-      setTheme(initialTheme);
-      applyTheme(initialTheme);
-    }
-
-    // Watch for system theme changes
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem(THEME_KEY)) {
-        const newTheme = e.matches ? DARK_THEME : LIGHT_THEME;
-        setTheme(newTheme);
-        applyTheme(newTheme);
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  // Update <html> when user toggles
+  const getSystemTheme = useCallback(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return prefersDark ? DARK_DEFAULT : LIGHT_DEFAULT;
+  }, []);
+
+  const handleThemeChange = useCallback((newTheme: string) => {
+    setTheme(newTheme);
+    sessionStorage.setItem(THEME_KEY, newTheme);
+  }, []);
+
+  // Initialize theme
+  useEffect(() => {
+    const saved = sessionStorage.getItem(THEME_KEY);
+    const initial = saved || getSystemTheme();
+    setTheme(initial);
+    applyTheme(initial);
+  }, [applyTheme, getSystemTheme]);
+
+  // Listen to system theme changes
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => {
+      if (!sessionStorage.getItem(THEME_KEY)) {
+        const sysTheme = e.matches ? DARK_DEFAULT : LIGHT_DEFAULT;
+        setTheme(sysTheme);
+        applyTheme(sysTheme);
+      }
+    };
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [applyTheme]);
+
+  // Apply theme when it changes
   useEffect(() => {
     applyTheme(theme);
-  }, [theme]);
+  }, [theme, applyTheme]);
 
-  const toggleTheme = () => {
-    const newTheme = theme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
-    setTheme(newTheme);
-    localStorage.setItem(THEME_KEY, newTheme);
-  };
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest(".theme-dropdown")) {
+        setOpen(false);
+      }
+    };
+    if (open) document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
+  const isDark = ALL_DARK_THEMES.includes(theme);
 
   return (
-    <div className="fixed top-4 right-4 z-50">
-      <button
-        onClick={toggleTheme}
-        className="btn btn-circle bg-base-200 hover:bg-base-300 border border-base-content/20 shadow transition-transform duration-500 hover:scale-110"
-      >
-        <div
-          className={`transition-all duration-500 transform ${
-            theme === LIGHT_THEME ? "rotate-0 scale-100" : "rotate-180 scale-110"
-          }`}
+    <div className="fixed top-3 sm:top-4 right-3 sm:right-4 z-[60] theme-dropdown">
+      <div className="dropdown dropdown-bottom dropdown-end">
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          className="btn btn-glass border border-base-content/10 gap-2 normal-case shadow-md hover:shadow-lg transition-all"
         >
-          {theme === LIGHT_THEME ? (
-            <LuSun className="w-6 h-6 text-amber-400" />
-          ) : (
-            <LuMoon className="w-6 h-6 text-blue-400" />
-          )}
-        </div>
-      </button>
+          <div
+            className={`transition-transform duration-500 ${
+              isDark ? "rotate-180" : "rotate-0"
+            }`}
+          >
+            {isDark ? (
+              <LuMoon className="w-5 h-5 text-blue-400" />
+            ) : (
+              <LuSun className="w-5 h-5 text-amber-400" />
+            )}
+          </div>
+          <span className="hidden sm:inline font-medium capitalize">{theme}</span>
+          <LuChevronDown
+            className={`w-4 h-4 opacity-70 hidden sm:block transition-transform ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        {open && (
+          <ul
+            className="dropdown-content menu xl:menu-horizontal bg-base-200/90 p-2 mt-2 z-1 lg:min-w-max shadow-xl backdrop-blur-md"
+          >
+            {Object.entries(THEMES).map(([category, themeList]) => (
+              <li key={category}>
+                <h2 className="menu-title">{category} Themes</h2>
+                <ul>
+                  {themeList.map((t) => (
+                    <li key={t}>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleThemeChange(t);
+                        }}
+                        className={`capitalize w-full text-left ${
+                          theme === t ? "active font-semibold" : ""
+                        }`}
+                      >
+                        {t}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }

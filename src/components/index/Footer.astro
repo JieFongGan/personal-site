@@ -1,0 +1,30 @@
+---
+// Footer component for personal site
+import { SiAstro, SiReact, SiTailwindcss, SiTypescript } from 'react-icons/si';
+import { Image } from 'astro:assets';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer footer-horizontal footer-center text-base-content p-10">
+  <aside>
+    <p>Built with</p>
+    <div class="grid grid-flow-col gap-4">
+      <SiAstro className="w-6 h-6 sm:w-8 sm:h-8 hover:scale-110 transition-transform duration-200 text-orange-500" />
+      <SiReact className="w-6 h-6 sm:w-8 sm:h-8 hover:scale-110 transition-transform duration-200 text-cyan-400" />
+      <SiTypescript className="w-6 h-6 sm:w-8 sm:h-8 hover:scale-110 transition-transform duration-200 text-blue-600" />
+      <SiTailwindcss className="w-6 h-6 sm:w-8 sm:h-8 hover:scale-110 transition-transform duration-200 text-cyan-500" />
+      <Image src="/daisyui-logo.webp" alt="DaisyUI" width={32} height={32} class="w-6 h-6 sm:w-8 sm:h-8 hover:scale-110 transition-transform duration-200" />
+    </div>
+    
+  </aside>
+
+  <p>© {currentYear} Gan Jie Fong — Thanks for visiting! Stay awesome!</p>
+</footer>
+
+<style>
+  .tooltip:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+</style>
