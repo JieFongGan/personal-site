@@ -60,6 +60,18 @@ export const careerData: CareerType[] = [
         ],
     },
     {
+        category: "internship",
+        title: "Web Developer",
+        organization: "Lakaran Cinta Sistem Empire",
+        organizationUrl: "https://www.lakarancintasistem.com/",
+        location: "Petaling Jaya, Shah Alam, Malaysia",
+        startDate: new Date(2021, 10),
+        endDate: new Date(2021, 12),
+        isCurrent: false,
+        description: `Worked on a web development project for a local business, creating a responsive and user-friendly website using **HTML**, **CSS**, and **JavaScript**. 
+        Focused on building intuitive layouts, styling, and interactive features to enhance the user experience.`
+    },
+    {
         category: "education",
         title: "Bachelor of Information Technology (Honours) in Information Security",
         organization: "Tunku Abdul Rahman University of Management and Technology (TARUMT)",
@@ -89,18 +101,6 @@ export const careerData: CareerType[] = [
                 style: "text-orange-600",
             },
         ]
-    },
-    {
-        category: "internship",
-        title: "Web Developer",
-        organization: "Lakaran Cinta Sistem Empire",
-        organizationUrl: "https://www.lakarancintasistem.com/",
-        location: "Petaling Jaya, Shah Alam, Malaysia",
-        startDate: new Date(2021, 10),
-        endDate: new Date(2021, 12),
-        isCurrent: false,
-        description: `Worked on a web development project for a local business, creating a responsive and user-friendly website using **HTML**, **CSS**, and **JavaScript**. 
-        Focused on building intuitive layouts, styling, and interactive features to enhance the user experience.`
     },
     {
         category: "internship",
