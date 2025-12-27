@@ -1,15 +1,6 @@
 ---
 import { Sun, Moon } from "lucide-astro";
 import { aboutData } from "../../lib/about.data";
-
-const hour = new Date().getHours();
-
-// SSR-safe greeting logic
-let greetings = ["Good Morning", "Selamat Pagi", "早上好"];
-if (hour >= 12 && hour < 18)
-  greetings = ["Good Afternoon", "Selamat Tengahari", "下午好"];
-else if (hour >= 18 || hour < 5)
-  greetings = ["Good Evening", "Selamat Malam", "晚上好"];
 ---
 
 <section
@@ -56,8 +47,8 @@ else if (hour >= 18 || hour < 5)
         <div class="hero-greeting mb-6">
           <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tighter leading-none">
             <span class="text-rotate">
-              <span class="flex flex-col">
-                {greetings.map((text) => <span>{text}</span>)}
+              <span class="flex flex-col" id="greeting-container">
+                <!-- Greetings injected by client script -->
               </span>
             </span>
           </h2>
@@ -94,7 +85,7 @@ else if (hour >= 18 || hour < 5)
       <!-- RIGHT -->
       <div class="hero-icon order-1 lg:order-2 flex-1 flex justify-center lg:justify-end">
         <div class="w-40 h-40 sm:w-56 sm:h-56 lg:w-[450px] lg:h-[450px]">
-          {hour >= 5 && hour < 18 ? (
+          {new Date().getHours() >= 5 && new Date().getHours() < 18 ? (
             <Sun class="w-full h-full text-primary animate-float" />
           ) : (
             <Moon class="w-full h-full text-primary animate-float" />
