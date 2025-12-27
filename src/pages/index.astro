@@ -1,95 +1,12 @@
 ---
-import ThemeToggle from "@/components/ui/ThemeToggle";
-import Hero from "@/components/index/Hero.astro";
-import AboutCard from "@/components/index/AboutCard.astro";
-import Career from "@/components/index/TimeLine.astro";
-import Footer from "@/components/index/Footer.astro";
-import "@/styles/global.css";
+import Layout from "../layouts/layout.astro";
+import Hero from "../components/hero/hero.astro";
+import AboutMe from "../components/about/about.astro";
+import Career from "../components/career/career.astro";
 ---
 
-<html lang="en">
-	<head>
-	  <meta charset="utf-8" />
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	  <meta name="generator" content={Astro.generator} />
-	
-	  <!-- SEO Meta -->
-	  <title>Gan Jie Fong — Code. Create. Deploy. Repeat.</title>
-	  <meta name="description" content="Official personal site of Gan Jie Fong — full-stack web developer from Malaysia. Explore my portfolio, experience, and projects." />
-	  <meta name="author" content="Gan Jie Fong" />
-	  <meta name="robots" content="index, follow" />
-	  <meta name="google-site-verification" content="I31vaJXHXTGCcCZFRKC9FqLGSF-0XeEstpVnE-7pTS8" />
-	
-	  <!-- Open Graph -->
-	  <meta property="og:type" content="website" />
-	  <meta property="og:url" content="https://ganjiefong.pages.dev" />
-	  <meta property="og:title" content="Gan Jie Fong — Code. Create. Deploy. Repeat." />
-	  <meta property="og:description" content="Full-stack web developer from Malaysia. Explore my portfolio, experience, and projects." />
-	  <meta property="og:image" content="https://ganjiefong.pages.dev/jf-formal.webp" />
-	
-	  <!-- Twitter Card -->
-	  <meta name="twitter:card" content="summary_large_image" />
-	  <meta name="twitter:title" content="Gan Jie Fong — Code. Create. Deploy. Repeat." />
-	  <meta name="twitter:description" content="Full-stack web developer from Malaysia. Explore my portfolio, experience, and projects." />
-	  <meta name="twitter:image" content="https://ganjiefong.pages.dev/jf-formal.webp" />
-	
-	  <!-- Favicon / PWA -->
-	  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      <meta name="theme-color" content="#0f172a" />
-	
-	  <!-- Canonical -->
-	  <link rel="canonical" href="https://ganjiefong.pages.dev" />
-	  
-	  <!-- Structured Data (JSON-LD for Google Search) -->
-	  <script type="application/ld+json">
-	  {
-	    "@context": "https://schema.org",
-	    "@type": "Person",
-	    "name": "Gan Jie Fong",
-	    "url": "https://ganjiefong.pages.dev",
-	    "image": "https://ganjiefong.pages.dev/jf-formal.webp",
-	    "jobTitle": "Full-stack web developer",
-	    "address": {
-	      "@type": "PostalAddress",
-	      "addressCountry": "Malaysia"
-	    },
-	    "sameAs": [
-	      "https://github.com/jiefonggan",
-	      "https://www.linkedin.com/in/ganjiefong"
-	    ]
-	  }
-	  </script>
-	</head>
-	<body>
-		<ThemeToggle client:load />
-
-		<Hero />
-
-		<!-- About Section -->
-		<section class="py-16 px-4 max-w-7xl mx-auto">
-			<div class="text-center mb-12">
-				<h2 class="text-4xl font-bold mb-4">About Me</h2>
-				<div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
-			</div>
-			<AboutCard />
-		</section>
-
-		<!-- Career Section -->
-		<section class="py-16 px-4">
-			<div class="max-w-7xl mx-auto">
-				<div class="text-center mb-12">
-					<h2 class="text-4xl font-bold mb-4">My Journey</h2>
-					<div class="w-24 h-1 bg-primary mx-auto rounded-full mb-4">
-					</div>
-					<p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-						A timeline of my educational background, internships,
-						and professional experiences
-					</p>
-				</div>
-				<Career />
-			</div>
-		</section>
-
-		<Footer />
-	</body>
-</html>
+<Layout title="My Portfolio">
+    <Hero />
+    <AboutMe />
+    <Career />
+</Layout>

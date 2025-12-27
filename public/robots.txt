@@ -1,4 +1,4 @@
-# Allow all search engines - recommended for a public portfolio
+# Allow all search engines
 User-agent: *
 Disallow:
 

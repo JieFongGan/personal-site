@@ -1,0 +1,96 @@
+---
+import "../assets/app.css";
+import { aboutData } from "../lib/about.data";
+
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+const siteUrl = "https://ganjiefong.pages.dev";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta -->
+    <title>{title}</title>
+    <meta name="description" content={aboutData.title + " - " + aboutData.summary} />
+    <meta name="author" content={aboutData.name} />
+    <meta name="robots" content="index, follow" />
+    <meta name="google-site-verification" content="I31vaJXHXTGCcCZFRKC9FqLGSF-0XeEstpVnE-7pTS8" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={aboutData.title + " - " + aboutData.summary} />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={aboutData.title + " - " + aboutData.summary} />
+    
+    <!-- Favicon / PWA -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0f172a" />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href={siteUrl} />
+    
+    <!-- Structured Data (JSON-LD for Google Search) -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: aboutData.name,
+      url: siteUrl,
+      jobTitle: "Full-stack web developer",
+      address: {
+        "@type": "PostalAddress",
+        addressCountry: "Malaysia",
+      },
+      sameAs: [
+        "https://github.com/jiefonggan",
+        "https://www.linkedin.com/in/ganjiefong",
+      ],
+    })} />
+    
+    <!-- Theme Switcher -->
+    <script is:inline>
+      const setTheme = () => {
+        const hour = new Date().getHours();
+        let theme;
+        if (hour >= 5 && hour < 12) theme = "retro";
+        else if (hour >= 12 && hour < 18) theme = "bumblebee";
+        else theme = "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+      };
+      setTheme();
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") setTheme();
+      });
+    </script>
+  </head>
+  
+  <body class="antialiased flex flex-col min-h-screen">
+    <main class="flex-grow">
+      <slot />
+    </main>
+    
+    <footer class="p-10 bg-base-200 text-base-content border-t border-base-300">
+      <div class="max-w-5xl mx-auto flex flex-col items-center gap-4 text-center">
+        <p class="text-lg font-medium">
+          Thanks for visiting! Wishing you a great day ahead.
+        </p>
+        <div class="text-sm opacity-70">
+          <p>© 2025 {aboutData.name}. All rights reserved.</p>
+          <p class="mt-1">Built with passion</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
