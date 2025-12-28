@@ -1,0 +1,153 @@
+---
+import { careerData } from "../../lib/career.data";
+import { ArrowUpRight } from "lucide-astro";
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+---
+
+<section id="career" class="py-16 lg:py-24 px-6 bg-base-100">
+  <div class="container mx-auto max-w-7xl">
+    <!-- Header -->
+    <header
+      class="career-header flex flex-col md:flex-row justify-between items-start md:items-end mb-10 lg:mb-16 gap-6 border-b border-base-content/5 pb-8"
+    >
+      <h2
+        class="career-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase italic leading-[0.9] md:leading-[0.8]"
+      >
+        CAREER <span class="text-primary">PATH</span>
+      </h2>
+
+      <p
+        class="career-summary font-mono text-[10px] uppercase opacity-40 tracking-[0.4em] max-w-xs text-left md:text-right leading-relaxed"
+      >
+        A timeline of my professional growth and technical contributions.
+      </p>
+    </header>
+
+    <!-- Timeline -->
+    <ul
+      class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical"
+    >
+      {
+        careerData.map((item, index) => {
+          const isLeft = index % 2 === 0;
+          const isFirst = index === 0;
+          const isLast = index === careerData.length - 1;
+
+          const alignment = isLeft
+            ? "timeline-start md:text-end"
+            : "timeline-end";
+
+          const lineClass = "m-0 border-none grow bg-base-content/10";
+
+          return (
+            <li aria-current={item.isCurrent ? "true" : "false"} class="career-item" data-index={index}>
+              {/* Top Line */}
+              <hr class={`career-line ${lineClass} ${isFirst && "invisible"}`} />
+
+              {/* Timeline Dot */}
+              <div class="timeline-middle">
+                <div class="career-dot-wrapper relative flex items-center justify-center size-8">
+                  {item.isCurrent && (
+                    <span class="absolute inset-0 rounded-full bg-primary/20 animate-ping" />
+                  )}
+
+                  <span
+                    class={`career-dot relative z-10 size-3 rounded-full border-2 ${
+                      item.isCurrent
+                        ? "bg-primary border-primary"
+                        : "bg-base-300 border-base-content/20"
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Content */}
+              <article class={`career-content ${alignment} pb-16 px-4 sm:px-8 space-y-4`}>
+                <header class="career-article-header space-y-2">
+                  <time class="career-time font-mono text-xs font-bold opacity-40 uppercase tracking-[0.2em]">
+                    {formatDate(item.startDate)} —{" "}
+                    {item.isCurrent ? "Present" : formatDate(item.endDate!)}
+                  </time>
+
+                  <h3 class="career-job-title text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">
+                    {item.title}
+                  </h3>
+
+                  <p class="career-organization text-primary font-bold text-base italic">
+                    {item.organizationUrl ? (
+                      <a
+                        href={item.organizationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1 hover:underline underline-offset-4"
+                        aria-label={`Visit ${item.organization}`}
+                      >
+                        {item.organization}
+                        <ArrowUpRight class="size-4 opacity-60" />
+                      </a>
+                    ) : (
+                      <span>{item.organization}</span>
+                    )}
+                  </p>
+                </header>
+
+                {/* Card */}
+                <div class="career-card card bg-base-200 border border-base-content/5 rounded-3xl shadow-sm overflow-hidden text-left">
+                  <div class="card-body p-5 md:p-6 space-y-5">
+                    <p class="career-description italic text-base-content/70 leading-relaxed text-sm md:text-base">
+                      {item.description}
+                    </p>
+
+                    {/* Skills */}
+                    <div class="career-skills-wrapper pt-4 border-t border-base-content/5">
+                      <ul
+                        class={`career-skills flex flex-wrap gap-2 ${
+                          isLeft ? "md:justify-end" : "justify-start"
+                        }`}
+                      >
+                        {item.learnedSkills.map((skill, skillIndex) => (
+                          <li
+                            class="career-skill flex items-center gap-2 bg-base-100 px-3 py-1.5 rounded-xl border border-base-content/5 transition-all hover:border-primary/20"
+                            title={skill.name}
+                            data-skill-index={skillIndex}
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              class={`size-3.5 fill-current ${skill.style} opacity-80`}
+                              aria-hidden="true"
+                            >
+                              <path d={skill.icon} />
+                            </svg>
+
+                            <span class="text-[9px] font-black uppercase tracking-widest opacity-60">
+                              {skill.name}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Bottom Line */}
+              <hr class={`career-line ${lineClass} ${isLast && "invisible"}`} />
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>
+
+<script>
+  import { initCareer } from "./career.ts";
+  
+  initCareer();
+  
+  document.addEventListener('astro:page-load', () => {
+    initCareer();
+  });
+</script>
