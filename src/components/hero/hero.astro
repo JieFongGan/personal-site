@@ -7,7 +7,6 @@ import { aboutData } from "@lib/about.data";
   id="hero"
   class="relative min-h-screen flex items-center justify-center bg-base-100 overflow-hidden px-6 py-12"
 >
-  <!-- Background blobs -->
   <div
     class="absolute top-[-5%] left-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"
   >
@@ -19,11 +18,9 @@ import { aboutData } from "@lib/about.data";
 
   <div class="relative z-10 w-full max-w-7xl mx-auto">
     <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
-      <!-- LEFT -->
       <div
         class="hero-left order-2 lg:order-1 flex flex-col items-center lg:items-start text-center lg:text-left flex-1"
       >
-        <!-- Clock -->
         <div class="hero-clock mb-8">
           <div
             class="badge badge-outline badge-lg py-5 px-6 gap-3 font-mono border-primary/30 bg-base-100/50 backdrop-blur-md"
@@ -35,37 +32,26 @@ import { aboutData } from "@lib/about.data";
               <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"
               ></span>
             </span>
-
             <span
               id="timezone-display"
-              class="font-bold text-primary uppercase tracking-widest"
+              class="font-bold text-primary uppercase tracking-widest">UTC</span
             >
-              UTC
-            </span>
-
             <span class="divider divider-horizontal mx-0 opacity-20"></span>
-
             <span
               id="live-clock"
-              class="font-bold tabular-nums text-base-content/90"
+              class="font-bold tabular-nums text-base-content/90">00:00:00</span
             >
-              00:00:00
-            </span>
           </div>
         </div>
 
-        <!-- Greeting -->
         <div class="hero-greeting mb-6">
           <h2 class="text-3xl sm:text-5xl font-black uppercase">
             <span class="text-rotate">
-              <span class="flex flex-col" id="greeting-container">
-                <!-- Greetings injected by client script -->
-              </span>
+              <span class="flex flex-col" id="greeting-container"> </span>
             </span>
           </h2>
         </div>
 
-        <!-- Name -->
         <div class="hero-name space-y-4">
           <h1
             class="text-3xl sm:text-5xl lg:text-7xl font-black uppercase italic"
@@ -79,38 +65,28 @@ import { aboutData } from "@lib/about.data";
           </p>
         </div>
 
-        <!-- CTAs -->
         <div
           class="hero-cta flex flex-col sm:flex-row gap-5 pt-10 w-full sm:w-auto"
         >
           <a
             href="#about"
             class="btn btn-primary btn-lg rounded-full px-12 group shadow-lg shadow-primary/20"
+            >About Me</a
           >
-            About Me
-          </a>
-
           <a
             href="#career"
             class="btn btn-ghost btn-outline btn-lg rounded-full px-12 border-base-content/20"
+            >Experience</a
           >
-            Experience
-          </a>
         </div>
       </div>
 
-      <!-- RIGHT -->
       <div
         class="hero-icon order-1 lg:order-2 flex-1 flex justify-center lg:justify-end"
       >
         <div class="w-40 h-40 sm:w-56 sm:h-56 lg:w-[450px] lg:h-[450px]">
-          {
-            new Date().getHours() >= 5 && new Date().getHours() < 18 ? (
-              <Sun class="w-full h-full text-primary animate-float" />
-            ) : (
-              <Moon class="w-full h-full text-primary animate-float" />
-            )
-          }
+          <Sun id="hero-sun" class="hidden w-full h-full text-primary" />
+          <Moon id="hero-moon" class="hidden w-full h-full text-primary" />
         </div>
       </div>
     </div>
@@ -120,15 +96,16 @@ import { aboutData } from "@lib/about.data";
 <script>
   import { initHero } from "./hero.ts";
 
+  // Initial load
   initHero();
 
+  // Re-init on Astro view transitions
   document.addEventListener("astro:page-load", () => {
     initHero();
   });
 </script>
 
 <style>
-  /* Prevent FOUC (Flash of Unstyled Content) for hero elements */
   .hero-clock,
   .hero-greeting span span,
   .hero-name > *,
@@ -136,5 +113,8 @@ import { aboutData } from "@lib/about.data";
   .hero-icon {
     opacity: 0;
     visibility: hidden;
+  }
+  .hidden {
+    display: none;
   }
 </style>
