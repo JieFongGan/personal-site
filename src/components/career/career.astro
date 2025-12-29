@@ -1,5 +1,5 @@
 ---
-import { careerData } from "../../lib/career.data";
+import { careerData } from "@lib/career.data";
 import { ArrowUpRight } from "lucide-astro";
 
 const formatDate = (date: Date) =>
@@ -8,12 +8,11 @@ const formatDate = (date: Date) =>
 
 <section id="career" class="py-16 lg:py-24 px-6 bg-base-100">
   <div class="container mx-auto max-w-7xl">
-    <!-- Header -->
     <header
       class="career-header flex flex-col md:flex-row justify-between items-start md:items-end mb-10 lg:mb-16 gap-6 border-b border-base-content/5 pb-8"
     >
       <h2
-        class="career-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase italic leading-[0.9] md:leading-[0.8]"
+        class="career-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase italic"
       >
         CAREER <span class="text-primary">PATH</span>
       </h2>
@@ -25,7 +24,6 @@ const formatDate = (date: Date) =>
       </p>
     </header>
 
-    <!-- Timeline -->
     <ul
       class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical"
     >
@@ -42,9 +40,15 @@ const formatDate = (date: Date) =>
           const lineClass = "m-0 border-none grow bg-base-content/10";
 
           return (
-            <li aria-current={item.isCurrent ? "true" : "false"} class="career-item" data-index={index}>
+            <li
+              aria-current={item.isCurrent ? "true" : "false"}
+              class="career-item"
+              data-index={index}
+            >
               {/* Top Line */}
-              <hr class={`career-line ${lineClass} ${isFirst && "invisible"}`} />
+              <hr
+                class={`career-line ${lineClass} ${isFirst && "invisible"}`}
+              />
 
               {/* Timeline Dot */}
               <div class="timeline-middle">
@@ -64,18 +68,21 @@ const formatDate = (date: Date) =>
               </div>
 
               {/* Content */}
-              <article class={`career-content ${alignment} pb-16 px-4 sm:px-8 space-y-4`}>
+              <article
+                class={`career-content ${alignment} pb-16 px-4 sm:px-8 space-y-4`}
+              >
                 <header class="career-article-header space-y-2">
                   <time class="career-time font-mono text-xs font-bold opacity-40 uppercase tracking-[0.2em]">
                     {formatDate(item.startDate)} —{" "}
                     {item.isCurrent ? "Present" : formatDate(item.endDate!)}
                   </time>
 
-                  <h3 class="career-job-title text-2xl md:text-4xl font-black uppercase italic tracking-tighter leading-none">
+                  {/* Removed tracking-tighter and leading-none */}
+                  <h3 class="career-job-title text-2xl md:text-4xl font-black uppercase italic">
                     {item.title}
                   </h3>
 
-                  <p class="career-organization text-primary font-bold text-base italic">
+                  <p class="career-organization text-primary font-bold text-base">
                     {item.organizationUrl ? (
                       <a
                         href={item.organizationUrl}
@@ -96,7 +103,7 @@ const formatDate = (date: Date) =>
                 {/* Card */}
                 <div class="career-card card bg-base-200 border border-base-content/5 rounded-3xl shadow-sm overflow-hidden text-left">
                   <div class="card-body p-5 md:p-6 space-y-5">
-                    <p class="career-description italic text-base-content/70 leading-relaxed text-sm md:text-base">
+                    <p class="career-description text-base-content/70 leading-relaxed text-sm md:text-base">
                       {item.description}
                     </p>
 
@@ -144,10 +151,10 @@ const formatDate = (date: Date) =>
 
 <script>
   import { initCareer } from "./career.ts";
-  
+
   initCareer();
-  
-  document.addEventListener('astro:page-load', () => {
+
+  document.addEventListener("astro:page-load", () => {
     initCareer();
   });
 </script>

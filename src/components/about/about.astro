@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { aboutData } from "../../lib/about.data";
+import { aboutData } from "@lib/about.data";
 import { MapPin, ArrowUpRight } from "lucide-astro";
-import myImage from "../../assets/images/avatar.jpg";
+import myImage from "@assets/images/avatar.jpg";
 ---
 
 <section id="about" class="py-16 lg:py-24 px-6 bg-base-100">
@@ -10,14 +10,11 @@ import myImage from "../../assets/images/avatar.jpg";
         <header
             class="about-header flex flex-col md:flex-row justify-between items-start md:items-end mb-10 lg:mb-16 gap-6 border-b border-base-content/5 pb-8"
         >
-            <div class="w-full">
-                <h2
-                    class="about-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase italic leading-[0.9] md:leading-[0.8] break-words"
-                >
-                    ABOUT <br class="block sm:hidden" />
-                    <span class="text-primary">ME</span>
-                </h2>
-            </div>
+            <h2
+                class="about-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase italic"
+            >
+                ABOUT <span class="text-primary">ME</span>
+            </h2>
 
             <p
                 class="about-summary font-mono text-[10px] uppercase opacity-40 tracking-[0.4em] max-w-xs text-left md:text-right leading-relaxed"
@@ -60,7 +57,9 @@ import myImage from "../../assets/images/avatar.jpg";
                             class="flex items-center gap-2 text-[10px] font-bold opacity-60"
                         >
                             <MapPin size={14} class="text-primary" />
-                            {aboutData.address}
+                            {aboutData.location.city}, {
+                                aboutData.location.country
+                            }
                         </div>
                     </div>
                 </div>
@@ -75,11 +74,11 @@ import myImage from "../../assets/images/avatar.jpg";
                     </div>
 
                     <h3
-                        class="about-subtitle text-3xl md:text-4xl font-bold leading-tight uppercase tracking-tight text-balance"
+                        class="about-subtitle text-3xl md:text-4xl font-bold uppercase text-balance"
                     >
                         Building things on the <span
                             class="text-primary underline underline-offset-8 decoration-primary/20"
-                            >web.</span
+                            >web</span
                         >
                     </h3>
 
@@ -89,19 +88,25 @@ import myImage from "../../assets/images/avatar.jpg";
                         {
                             aboutData.bio
                                 .split("\n\n")
-                                .map((paragraph) => <p class="about-paragraph">{paragraph}</p>)
+                                .map((paragraph) => (
+                                    <p class="about-paragraph">{paragraph}</p>
+                                ))
                         }
                     </div>
                 </div>
 
-                <div class="about-social-section pt-8 border-t border-base-content/5">
+                <div
+                    class="about-social-section pt-8 border-t border-base-content/5"
+                >
                     <p
                         class="about-social-label text-[10px] uppercase tracking-[0.4em] font-black opacity-30 mb-6 text-center lg:text-left"
                     >
                         Let's Connect
                     </p>
 
-                    <div class="about-social-grid grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div
+                        class="about-social-grid grid grid-cols-1 sm:grid-cols-2 gap-3"
+                    >
                         {
                             aboutData.social.map((item, index) => (
                                 <a
@@ -134,13 +139,3 @@ import myImage from "../../assets/images/avatar.jpg";
         </div>
     </div>
 </section>
-
-<script>
-  import { initAbout } from "./about.ts";
-  
-  initAbout();
-  
-  document.addEventListener('astro:page-load', () => {
-    initAbout();
-  });
-</script>

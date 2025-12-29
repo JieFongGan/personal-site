@@ -1,0 +1,18 @@
+<script is:inline>
+  const setTheme = () => {
+    const hour = new Date().getHours();
+    let theme;
+    if (hour >= 5 && hour < 12) theme = "bumblebee";
+    else if (hour >= 12 && hour < 18) theme = "cmyk";
+    else theme = "dim";
+    document.documentElement.setAttribute("data-theme", theme);
+  };
+
+  // Run on initial load
+  setTheme();
+
+  // Update if user returns to the tab
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") setTheme();
+  });
+</script>

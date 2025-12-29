@@ -2,19 +2,18 @@
 @plugin "daisyui" {
   themes: all;
 }
-
 @font-face {
-  font-family: 'Geist';
-  src: url('/fonts/Geist.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Mona Sans';
+  src: url('/fonts/MonaSansVF.woff2') format('woff2');
+  font-weight: 200 900;
+  font-style: oblique 0deg 12deg;
   font-display: swap;
 }
-
-:root {
-  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
-}
-
 body {
-  font-family: var(--font-sans);
+  font-family: 'Mona Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6, b, strong {
+  font-weight: 700;
 }

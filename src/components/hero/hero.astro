@@ -1,6 +1,6 @@
 ---
 import { Sun, Moon } from "lucide-astro";
-import { aboutData } from "../../lib/about.data";
+import { aboutData } from "@lib/about.data";
 ---
 
 <section
@@ -8,21 +8,32 @@ import { aboutData } from "../../lib/about.data";
   class="relative min-h-screen flex items-center justify-center bg-base-100 overflow-hidden px-6 py-12"
 >
   <!-- Background blobs -->
-  <div class="absolute top-[-5%] left-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-  <div class="absolute bottom-[-5%] right-[-5%] w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] animate-pulse-slow-delayed"></div>
+  <div
+    class="absolute top-[-5%] left-[-5%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow"
+  >
+  </div>
+  <div
+    class="absolute bottom-[-5%] right-[-5%] w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] animate-pulse-slow-delayed"
+  >
+  </div>
 
   <div class="relative z-10 w-full max-w-7xl mx-auto">
     <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
-
       <!-- LEFT -->
-      <div class="hero-left order-2 lg:order-1 flex flex-col items-center lg:items-start text-center lg:text-left flex-1">
-
+      <div
+        class="hero-left order-2 lg:order-1 flex flex-col items-center lg:items-start text-center lg:text-left flex-1"
+      >
         <!-- Clock -->
         <div class="hero-clock mb-8">
-          <div class="badge badge-outline badge-lg py-5 px-6 gap-3 font-mono border-primary/30 bg-base-100/50 backdrop-blur-md">
+          <div
+            class="badge badge-outline badge-lg py-5 px-6 gap-3 font-mono border-primary/30 bg-base-100/50 backdrop-blur-md"
+          >
             <span class="relative flex h-2 w-2">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
+              ></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"
+              ></span>
             </span>
 
             <span
@@ -45,7 +56,7 @@ import { aboutData } from "../../lib/about.data";
 
         <!-- Greeting -->
         <div class="hero-greeting mb-6">
-          <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tighter leading-none">
+          <h2 class="text-3xl sm:text-5xl font-black uppercase">
             <span class="text-rotate">
               <span class="flex flex-col" id="greeting-container">
                 <!-- Greetings injected by client script -->
@@ -56,16 +67,22 @@ import { aboutData } from "../../lib/about.data";
 
         <!-- Name -->
         <div class="hero-name space-y-4">
-          <h1 class="text-3xl sm:text-5xl lg:text-7xl font-black tracking-tighter uppercase italic leading-[0.9] md:leading-[0.8]">
+          <h1
+            class="text-3xl sm:text-5xl lg:text-7xl font-black uppercase italic"
+          >
             I'm <span class="text-primary">{aboutData.name}</span>
           </h1>
-          <p class="font-mono text-xs sm:text-sm tracking-[0.6em] uppercase text-secondary">
+          <p
+            class="font-mono text-xs sm:text-sm tracking-[0.6em] uppercase text-secondary"
+          >
             // {aboutData.title}
           </p>
         </div>
 
         <!-- CTAs -->
-        <div class="hero-cta flex flex-col sm:flex-row gap-5 pt-10 w-full sm:w-auto">
+        <div
+          class="hero-cta flex flex-col sm:flex-row gap-5 pt-10 w-full sm:w-auto"
+        >
           <a
             href="#about"
             class="btn btn-primary btn-lg rounded-full px-12 group shadow-lg shadow-primary/20"
@@ -83,26 +100,29 @@ import { aboutData } from "../../lib/about.data";
       </div>
 
       <!-- RIGHT -->
-      <div class="hero-icon order-1 lg:order-2 flex-1 flex justify-center lg:justify-end">
+      <div
+        class="hero-icon order-1 lg:order-2 flex-1 flex justify-center lg:justify-end"
+      >
         <div class="w-40 h-40 sm:w-56 sm:h-56 lg:w-[450px] lg:h-[450px]">
-          {new Date().getHours() >= 5 && new Date().getHours() < 18 ? (
-            <Sun class="w-full h-full text-primary animate-float" />
-          ) : (
-            <Moon class="w-full h-full text-primary animate-float" />
-          )}
+          {
+            new Date().getHours() >= 5 && new Date().getHours() < 18 ? (
+              <Sun class="w-full h-full text-primary animate-float" />
+            ) : (
+              <Moon class="w-full h-full text-primary animate-float" />
+            )
+          }
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
 <script>
   import { initHero } from "./hero.ts";
-  
+
   initHero();
-  
-  document.addEventListener('astro:page-load', () => {
+
+  document.addEventListener("astro:page-load", () => {
     initHero();
   });
 </script>

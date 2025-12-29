@@ -12,4 +12,4 @@ This project is built using the following technologies:
 - **GSAP**: A powerful JavaScript animation library for creating smooth, professional animations
 - **Lucide Astro**: A collection of beautiful icons optimized for Astro
 - **Simple Icons**: A collection of popular brand icons
-
+- **Mona Sans**: A modern, industrial variable font by GitHub designed for high-performance and expressive web typography
