@@ -2,33 +2,18 @@
 @plugin "daisyui" {
   themes: all;
 }
-
-/* Normal style */
 @font-face {
   font-family: 'Mona Sans';
-  src: url('/fonts/MonaSansVF.woff2') format('woff2-variations');
+  src: url('/fonts/MonaSansVF.woff2') format('woff2');
   font-weight: 200 900;
-  font-style: normal;
+  font-style: oblique 0deg 12deg;
   font-display: swap;
 }
-
-/* Italic style */
-@font-face {
-  font-family: 'Mona Sans';
-  src: url('/fonts/MonaSansVF.woff2') format('woff2-variations');
-  font-weight: 200 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Base styles */
 body {
   font-family: 'Mona Sans', system-ui, -apple-system, sans-serif;
-  font-weight: 400; /* default weight */
+  font-weight: 400;
   line-height: 1.5;
 }
-
-/* Headings and bold text */
 h1, h2, h3, h4, h5, h6, b, strong {
   font-weight: 700;
 }
