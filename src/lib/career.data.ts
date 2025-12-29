@@ -1,4 +1,4 @@
-import type { CareerType } from "@/lib/types";
+import type { CareerType } from "@lib/types";
 import {
     siHtml5,
     siCss,

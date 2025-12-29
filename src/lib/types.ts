@@ -7,8 +7,14 @@ export type IconItem = {
 
 export type AboutType = {
     name: string;
+    aliases: string[];
     title: string;
-    address: string;
+    location: {
+        city: string;
+        region: string;
+        country: string;
+        countryCode: string;
+    };
     social: IconItem[];
     summary: string;
     bio: string;
